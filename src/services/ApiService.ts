@@ -1,16 +1,16 @@
-import {IApiService} from "./IApiService.ts";
-import {ProductDTO} from "./productDTOs/ProductDTO.ts";
-import {LoginDTO} from "./userDTOs/LoginDTO.ts";
-import {LoginResponseDTO} from "./userDTOs/LoginResponseDTO.ts";
-import {RegisterDTO} from "./userDTOs/RegisterDTO.ts";
-import {CategoryDTO} from "./productDTOs/CategoriesDTO.ts";
-import {PasswordChangeDTO} from "./userDTOs/PasswordChangeDTO.ts";
-import {UserDataDTO} from "./userDTOs/UserDataDTO.ts";
-import {OrderDTO} from "./orderDTOs/OrderDTO.ts";
-import {PlaceOrderDTO} from "./orderDTOs/PlaceOrderDTO.ts";
-import {ErrorDTO} from "./userDTOs/ErrorDTO.ts";
-import {UserDataInProfileDTO} from "./userDTOs/UserDataInProfileDTO.ts";
-import { logger } from "../utilities/logger.ts";
+import {IApiService} from "./IApiService";
+import {ProductDTO} from "./productDTOs/ProductDTO";
+import {LoginDTO} from "./userDTOs/LoginDTO";
+import {LoginResponseDTO} from "./userDTOs/LoginResponseDTO";
+import {RegisterDTO} from "./userDTOs/RegisterDTO";
+import {CategoryDTO} from "./productDTOs/CategoriesDTO";
+import {PasswordChangeDTO} from "./userDTOs/PasswordChangeDTO";
+import {UserDataDTO} from "./userDTOs/UserDataDTO";
+import {OrderDTO} from "./orderDTOs/OrderDTO";
+import {PlaceOrderDTO} from "./orderDTOs/PlaceOrderDTO";
+import {ErrorDTO} from "./userDTOs/ErrorDTO";
+import {UserDataInProfileDTO} from "./userDTOs/UserDataInProfileDTO";
+import { logger } from "../utilities/logger";
 import { log } from "console";
 
 export const ApiService: IApiService = {

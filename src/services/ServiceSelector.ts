@@ -1,5 +1,5 @@
-import {IApiService} from "./IApiService.ts";
-import {MockService} from "./MockService.ts";
-import {ApiService} from "./ApiService.ts";
+import {IApiService} from "./IApiService";
+import {MockService} from "./MockService";
+import {ApiService} from "./ApiService";
 
 export const ServiceSelector: IApiService = ApiService;

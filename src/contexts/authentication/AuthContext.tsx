@@ -1,11 +1,11 @@
-import React, {createContext, useContext, useState} from "react";
-import {UserSessionData, AuthContextType} from "./AuthTypes.ts";
-import {LoginFormDataInterface} from "../../components/form/LoginFormDataInterface.ts";
-import {ServiceSelector} from "../../services/ServiceSelector.ts";
-import {LoginDTO} from "../../services/userDTOs/LoginDTO.ts";
-import {LoginResponseDTO} from "../../services/userDTOs/LoginResponseDTO.ts";
-import {UseShoppingCart} from "../shoppingCart/ShoppingCartContext.tsx";
-import { logger } from "../../utilities/logger.ts";
+import {createContext, useContext, useState} from "react";
+import {UserSessionData, AuthContextType} from "./AuthTypes";
+import {LoginFormDataInterface} from "../../components/form/LoginFormDataInterface";
+import {ServiceSelector} from "../../services/ServiceSelector";
+import {LoginDTO} from "../../services/userDTOs/LoginDTO";
+import {LoginResponseDTO} from "../../services/userDTOs/LoginResponseDTO";
+import {UseShoppingCart} from "../shoppingCart/ShoppingCartContext";
+import { logger } from "../../utilities/logger";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

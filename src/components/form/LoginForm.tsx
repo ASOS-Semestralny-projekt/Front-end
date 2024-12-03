@@ -2,13 +2,13 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
 import './Form.css'
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {LoginFormDataInterface} from './LoginFormDataInterface.ts'
+import {LoginFormDataInterface} from './LoginFormDataInterface'
 import {Spinner} from "react-bootstrap";
-import {useAuth} from "../../contexts/authentication/AuthContext.tsx";
+import {useAuth} from "../../contexts/authentication/AuthContext";
 import {Alert} from "@mui/material";
-import { logger } from "../../utilities/logger.ts";
+import { logger } from "../../utilities/logger";
 
 export function LoginForm() {
 

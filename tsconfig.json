@@ -10,6 +10,14 @@
     "lib": ["dom", "esnext"],
     "moduleResolution": "node",
     "jsx": "react-jsx",
-    "types": ["vitest", "vite/client"]
-  }
+    "types": ["vitest", "vite/client"],
+    "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true 
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }
