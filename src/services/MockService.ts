@@ -40,7 +40,7 @@ const categories: CategoryDTO[] = [
 ]
 
 const loginResponse: LoginResponseDTO = {
-    session_token: "0123456789", user_id: 2, first_name: "Miro", last_name: "Nejaký",
+    session_token: "0123456789", user_id: 1, first_name: "Miro", last_name: "Nejaký",
 }
 
 const userData: UserDataDTO = {first_name: "Miroslav", last_name: "Malíšek", street: "Kvetná", house_number: "9B",
@@ -127,13 +127,13 @@ const productsInPlaceOrder1: ProductInPlaceOrderDTO[] = [
 
 export const placeOrder0: PlaceOrderDTO = {
     customer: userDataAll,
-    products_in_order: productsInPlaceOrder0,
+    productsInOrder: productsInPlaceOrder0,
     total_price: 2689.77,
 }
 
 export const placeOrder1: PlaceOrderDTO = {
     customer: userDataAll,
-    products_in_order: productsInPlaceOrder1,
+    productsInOrder: productsInPlaceOrder1,
     total_price: 1630.0,
 }
 
@@ -199,7 +199,7 @@ export const MockService: IApiService = {
     async login(loginData: LoginDTO): Promise<LoginResponseDTO> {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                if (loginData.email === "mirec300@gmail.com" && loginData.password === "password") {
+                if (loginData.email === "unique@mail.com" && loginData.password === "password") {
                     resolve(loginResponse);
                 } else {
                     reject(new Error("Nesprávny email alebo heslo"));
@@ -211,7 +211,7 @@ export const MockService: IApiService = {
     async register(registerData: RegisterDTO): Promise<void> {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                if (registerData.email !== "mirec300@gmail.com") {
+                if (registerData.email !== "example@mail.com") {
                     resolve();
                 } else {
                     reject(new Error("Zadaný email už existuje"));

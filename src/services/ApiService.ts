@@ -11,11 +11,20 @@ import {PlaceOrderDTO} from "./orderDTOs/PlaceOrderDTO.ts";
 import {ErrorDTO} from "./userDTOs/ErrorDTO.ts";
 import {UserDataInProfileDTO} from "./userDTOs/UserDataInProfileDTO.ts";
 import { logger } from "../utilities/logger.ts";
-import { log } from "console";
 
-export const ApiService: IApiService = {
+export class ApiService implements IApiService {
 
-    BASE_URL: import.meta.env.VITE_BE_BASE_URL,
+    private static instance: ApiService;
+    //BASE_URL: import.meta.env.VITE_BE_BASE_URL,
+    BASE_URL: string = "http://localhost:83"
+    private constructor() {}
+
+    public static getInstance(): ApiService {
+        if (!ApiService.instance) {
+            ApiService.instance = new ApiService();
+        }
+        return ApiService.instance;
+    }
 
     async getProducts(): Promise<ProductDTO[]> {
         let endpoint = "/products";
@@ -31,12 +40,19 @@ export const ApiService: IApiService = {
                 throw new Error(`Nepodarilo sa načítať produkty`);
             }
             return await response.json();
+            /*let responseJson: ProductDTO[] = await response.json();
+            console.log(responseJson);
+            responseJson = responseJson.map(product => {
+                product.img_path = `${import.meta.env.VITE_BE_BASE_URL}/${product.img_path}`;
+                return product;
+            });
+            return responseJson*/
         } catch (error) {
             console.error(error);
             logger.error(error);
             throw error;
         }
-    },
+    }
 
     async getCategories(): Promise<CategoryDTO[]> {
         let endpoint = "/categories";
@@ -57,7 +73,7 @@ export const ApiService: IApiService = {
             logger.error(error);
             throw error;
         }
-    },
+    }
 
     async getProductsByCategory(category_id: number): Promise<ProductDTO[]> {
         let endpoint = `/products/${category_id}`;
@@ -78,7 +94,7 @@ export const ApiService: IApiService = {
             logger.error(error);
             throw error;
         }
-    },
+    }
 
     async getProductsBySearchString(searchString: string): Promise<ProductDTO[]> {
 
@@ -100,7 +116,7 @@ export const ApiService: IApiService = {
             logger.error(error);
             throw error;
         }
-    },
+    }
 
     async getProduct(id: number): Promise<ProductDTO> {
         let endpoint = `/product/${id}`;
@@ -121,7 +137,7 @@ export const ApiService: IApiService = {
             logger.error(error);
             throw error;
         }
-    },
+    }
 
     async getUserData(): Promise<UserDataInProfileDTO> {
         let endpoint = `/user`;
@@ -145,7 +161,7 @@ export const ApiService: IApiService = {
             logger.error(error instanceof Error ? error.message : 'Neznáma chyba.');
             throw new Error(error instanceof Error ? error.message : 'Neznáma chyba.');
         }
-    },
+    }
 
     async changeUserData(userData: UserDataDTO): Promise<UserDataInProfileDTO> {
         let endpoint = `/user`;
@@ -170,7 +186,7 @@ export const ApiService: IApiService = {
             logger.error(error instanceof Error ? error.message : 'Neznáma chyba.');
             throw new Error(error instanceof Error ? error.message : 'Neznáma chyba.');
         }
-    },
+    }
 
     async changePassword(passwordData: PasswordChangeDTO): Promise<void> {
         let endpoint = `/user/password`;
@@ -195,7 +211,7 @@ export const ApiService: IApiService = {
             logger.error(error instanceof Error ? error.message : 'Neznáma chyba.');
             throw new Error(error instanceof Error ? error.message : 'Neznáma chyba.');
         }
-    },
+    }
 
     async register(registerData: RegisterDTO): Promise<void> {
         let endpoint = `/register`;
@@ -219,7 +235,7 @@ export const ApiService: IApiService = {
             logger.error(error instanceof Error ? error.message : 'Neznáma chyba. Skúste sa registrovať znovu.');
             throw new Error(error instanceof Error ? error.message : 'Neznáma chyba. Skúste sa registrovať znovu.');
         }
-    },
+    }
 
     async login(loginData: LoginDTO): Promise<LoginResponseDTO> {
         let endpoint = `/login`;
@@ -244,7 +260,7 @@ export const ApiService: IApiService = {
             logger.error(error instanceof Error ? error.message : 'Neznáma chyba. Skúste sa prihlásiť znovu.');
             throw new Error(error instanceof Error ? error.message : 'Neznáma chyba. Skúste sa prihlásiť znovu.');
         }
-    },
+    }
 
     async logout(): Promise<void> {
         let endpoint = `/logout`;
@@ -268,7 +284,7 @@ export const ApiService: IApiService = {
             logger.error(error instanceof Error ? error.message : 'Neznáma chyba. Skúste sa odhlásiť znovu.');
             throw new Error(error instanceof Error ? error.message : 'Neznáma chyba. Skúste sa odhlásiť znovu.');
         }
-    },
+    }
 
     async placeOrder(order: PlaceOrderDTO): Promise<void> {
         let endpoint = `/place-order`;
@@ -293,7 +309,7 @@ export const ApiService: IApiService = {
             logger.error(error instanceof Error ? error.message : 'Neznáma chyba. Skúste odoslať objednávku znovu.');
             throw new Error(error instanceof Error ? error.message : 'Neznáma chyba. Skúste odoslať objednávku znovu.');
         }
-    },
+    }
 
     async getOrders(): Promise<OrderDTO[]> {
         let endpoint = `/orders`;
@@ -317,7 +333,7 @@ export const ApiService: IApiService = {
             logger.error(error instanceof Error ? error.message : 'Neznáma chyba pri získaní objednávok.');
             throw new Error(error instanceof Error ? error.message : 'Neznáma chyba pri získaní objednávok.');
         }
-    },
+    }
 
 
     /*getUserCartData(): Promise<> {

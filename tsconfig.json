@@ -5,11 +5,13 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
-    "module": "esnext",
+    "allowImportingTsExtensions": true,
+    "esModuleInterop": true,
+    "module": "node16",
     "target": "esnext",
     "lib": ["dom", "esnext"],
     "moduleResolution": "node",
     "jsx": "react-jsx",
-    "types": ["vitest", "vite/client"]
+    "types": ["vitest", "vite/client", "jest", "node", "@testing-library/jest-dom"]
   }
 }

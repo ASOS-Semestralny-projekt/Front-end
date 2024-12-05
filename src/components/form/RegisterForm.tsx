@@ -7,10 +7,10 @@ import "./Form.css"
 import React, {useEffect, useState} from "react";
 import {RegisterDTO} from "../../services/userDTOs/RegisterDTO.ts";
 import {Spinner} from "react-bootstrap";
-import {useNavigate} from "react-router-dom";
 import {Alert} from "@mui/material";
 import {ServiceSelector} from "../../services/ServiceSelector.ts";
 import { logger } from "../../utilities/logger.ts";
+import {useNavigate} from "react-router-dom";
 
 
 export function RegisterForm() {
@@ -19,6 +19,7 @@ export function RegisterForm() {
 
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<{ message: string } | null>(null);
+    const [errorMissingDataInForm, setErrorMissingDataInForm] = useState<{ message: string } | null>(null);
     const [registerSuccess, setRegisterSuccess] = useState<boolean>(false);
     const [showRegisterSuccessMessage, setShowRegisterSuccessMessage] = useState<boolean>(false);
     const navigate = useNavigate();
@@ -36,20 +37,56 @@ export function RegisterForm() {
         password: "",
     });
 
+    const fieldNames: { [key: string]: string } = {
+        first_name: "Meno",
+        last_name: "Priezvisko",
+        email: "Email",
+        street: "Ulica",
+        house_number: "Číslo domu",
+        zip_code: "PSČ",
+        city: "Mesto",
+        country: "Krajina",
+        phone: "Telefónne číslo",
+        password: "Heslo"
+    };
+
+    const checkFormField = (): boolean => {
+        // Find fields that are empty
+        const emptyFields = Object.entries(formData).filter(([key, value]) => value.trim() === "");
+
+        // If there are empty fields, set an error message and return false
+        if (emptyFields.length > 0) {
+            const fieldNamesString = emptyFields
+                .map(([key]) => fieldNames[key] || key) // Map field keys to user-friendly names
+                .join(", ");
+            setErrorMissingDataInForm({
+                message: `Nasledujúce polia nemôžu byť prázdne: ${fieldNamesString}`,
+            });
+
+            return false; // Validation failed
+        }
+
+        // Clear error if validation passes
+        setErrorMissingDataInForm(null);
+        return true; // Validation successful
+    };
+
     const signUp = async (e: any) => {
         e.preventDefault();
-        setLoading(true)
         setRegisterSuccess(false);
         setError(null)
 
-        try {
-            await apiService.register(formData)
-            setRegisterSuccess(true);
-            setShowRegisterSuccessMessage(true);
-        } catch (error) {
-            setError({ message: (error as Error).message });
-        }finally {
-            setLoading(false)
+        if (checkFormField()){
+            setLoading(true)
+            try {
+                await apiService.register(formData)
+                setRegisterSuccess(true);
+                setShowRegisterSuccessMessage(true);
+            } catch (error) {
+                setError({ message: (error as Error).message });
+            }finally {
+                setLoading(false)
+            }
         }
 
     }
@@ -73,7 +110,7 @@ export function RegisterForm() {
 
             return () => clearTimeout(timer);
         }
-    }, [registerSuccess, navigate]);
+    }, [registerSuccess]);
 
     return (
         <Card className='mx-auto' style={{maxWidth: "36rem"}}>
@@ -95,8 +132,7 @@ export function RegisterForm() {
                                         name='first_name'
                                         value={formData.first_name}
                                         onChange={handleChange}
-                                        placeholder="Zadajte vaše meno"
-                                        required={true}/>
+                                        placeholder="Zadajte vaše meno"/>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Col} xs={12} md={6} className="mb-3" controlId="formHorizontalSurname">
@@ -109,8 +145,7 @@ export function RegisterForm() {
                                         name='last_name'
                                         value={formData.last_name}
                                         onChange={handleChange}
-                                        placeholder="Zadajte vaše priezvisko"
-                                        required={true}/>
+                                        placeholder="Zadajte vaše priezvisko"/>
                                 </Col>
                             </Form.Group>
                         </Row>
@@ -124,7 +159,6 @@ export function RegisterForm() {
                                         value={formData.street}
                                         onChange={handleChange}
                                         placeholder="Zadajte ulicu bydliska"
-                                        required={true}
                                     />
                                 </Col>
                             </Form.Group>
@@ -137,7 +171,6 @@ export function RegisterForm() {
                                         value={formData.house_number}
                                         onChange={handleChange}
                                         placeholder="Zadajte číslo domu"
-                                        required={true}
                                     />
                                 </Col>
                             </Form.Group>
@@ -152,7 +185,6 @@ export function RegisterForm() {
                                         value={formData.city}
                                         onChange={handleChange}
                                         placeholder="Zadajte mesto"
-                                        required={true}
                                     />
                                 </Col>
                             </Form.Group>
@@ -165,7 +197,6 @@ export function RegisterForm() {
                                         value={formData.zip_code}
                                         onChange={handleChange}
                                         placeholder="Zadajte PSČ"
-                                        required={true}
                                     />
                                 </Col>
                             </Form.Group>
@@ -180,7 +211,6 @@ export function RegisterForm() {
                                     value={formData.country}
                                     onChange={handleChange}
                                     placeholder="Zadajte vašu krajinu"
-                                    required={true}
                                 />
                             </Form.Group>
                         </Row>
@@ -194,7 +224,6 @@ export function RegisterForm() {
                                     value={formData.email}
                                     onChange={handleChange}
                                     placeholder="example@mail.com"
-                                    required={true}
                                 />
                             </Form.Group>
                         </Row>
@@ -211,7 +240,7 @@ export function RegisterForm() {
                                         value={formData.phone}
                                         onChange={handleChange}
                                         placeholder="+421..."
-                                        required={true}/>
+                                        />
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Col} xs={12} md={6} className="mb-3" controlId="formHorizontalPassword">
@@ -225,10 +254,18 @@ export function RegisterForm() {
                                         value={formData.password}
                                         onChange={handleChange}
                                         placeholder="***************"
-                                        required={true}/>
+                                        />
                                 </Col>
                             </Form.Group>
                         </Row>
+
+                        {errorMissingDataInForm && (
+                            <div className="error-message-div mt-3">
+                                <Alert severity="error" className="error-message">
+                                    {errorMissingDataInForm.message}
+                                </Alert>
+                            </div>
+                        )}
 
                         {error && <div className="error-message-div mb-3 mt-4">
                             <Alert variant="filled" severity="error" className="error-message ">
